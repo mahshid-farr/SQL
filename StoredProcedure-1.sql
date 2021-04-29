@@ -45,14 +45,6 @@ END;
    END IF;
    END;
    
---when varchar2 variable message is null
-
-my constant variable: 704B
-next week is: 09-APR-20
-Course is unknown, but room number is : 704B
-
-
-
 
  DECLARE
     message VARCHAR2(50);
@@ -63,7 +55,7 @@ Course is unknown, but room number is : 704B
     BEGIN
        message := 'C++ advanced';
     dbms_output.put_line('my constant variable: ' || myConst);
-   dbms_output.put_line('next week is: ' || myDate);
+    dbms_output.put_line('next week is: ' || myDate);
  
  
  
@@ -82,15 +74,6 @@ Course is unknown, but room number is : 704B
    END IF;
    END;
   
--- when varchar2 variable message is set to'C++ advanced'
-
-my constant variable: 704B
-next week is: 09-APR-20
-The name of the course is : C++ advanced and room number is : 704B
-
-
-
-
 
 CREATE TABLE Lab8_tab (
 Id NUMBER(6),
