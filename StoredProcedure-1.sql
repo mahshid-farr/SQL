@@ -44,7 +44,7 @@ END;
    dbms_output.put_line('Course and location could not be determined');
    END IF;
    END;
-   /
+   
 --when varchar2 variable message is null
 
 my constant variable: 704B
@@ -104,9 +104,6 @@ CREATE SEQUENCE Lab1_seq
   INCREMENT BY   5
   NOCACHE
   NOCYCLE;
-
-Sequence created.
-
 
 
 
