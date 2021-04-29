@@ -1,0 +1,258 @@
+
+
+
+
+Question 1:
+SQL> select d.DEPARTMENT_NAME, l.CITY, l.STREET_ADDRESS, l.POSTAL_CODE
+  2  from departments d join locations l
+  3  on d.LOCATION_ID=l.LOCATION_ID
+  4  order by 1 desc
+  5  /
+
+DEPARTMENT_NAME                CITY
+------------------------------ ------------------------------
+STREET_ADDRESS                           POSTAL_CODE
+---------------------------------------- ------------
+Shipping                       South San Francisco
+2011 Interiors Blvd                      99236
+
+Sales                          Oxford
+Magdalen Centre, The Oxford Science Park OX9 9ZB
+
+Marketing                      Toronto
+147 Spadina Ave                          M5V 2L7
+
+
+DEPARTMENT_NAME                CITY
+------------------------------ ------------------------------
+STREET_ADDRESS                           POSTAL_CODE
+---------------------------------------- ------------
+IT                             Southlake
+2014 Jabberwocky Rd                      26192
+
+Executive                      Seattle
+2004 Charade Rd                          98199
+
+Contracting                    Seattle
+2004 Charade Rd                          98199
+
+
+DEPARTMENT_NAME                CITY
+------------------------------ ------------------------------
+STREET_ADDRESS                           POSTAL_CODE
+---------------------------------------- ------------
+Administration                 Seattle
+2004 Charade Rd                          98199
+
+Accounting                     Seattle
+2004 Charade Rd                          98199
+
+
+8 rows selected.
+
+
+Question 2:
+SQL> select CONCAT(FIRST_NAME||'/ ',LAST_NAME) as "Full Name",e.HIRE_DATE, e.salary,d.DEPARTMENT_NAME
+  2  from employees e join departments d
+  3  on e.DEPARTMENT_ID = d.DEPARTMENT_ID
+  4  where d.DEPARTMENT_NAME like'A%' or  d.DEPARTMENT_NAME like'S%'
+  5  order by d.DEPARTMENT_NAME, LAST_NAME
+  6  /
+
+Full Name                                       HIRE_DATE     SALARY
+----------------------------------------------- --------- ----------
+DEPARTMENT_NAME
+------------------------------
+William/ Gietz                                  07-JUN-94       8300
+Accounting
+
+Shelley/ Higgins                                07-JUN-94      12000
+Accounting
+
+Jennifer/ Whalen                                17-SEP-87       4400
+Administration
+
+
+Full Name                                       HIRE_DATE     SALARY
+----------------------------------------------- --------- ----------
+DEPARTMENT_NAME
+------------------------------
+Ellen/ Abel                                     11-MAY-96      11000
+Sales
+
+Jonathon/ Taylor                                24-MAR-98       8600
+Sales
+
+Eleni/ Zlotkey                                  29-JAN-00      10500
+Sales
+
+
+Full Name                                       HIRE_DATE     SALARY
+----------------------------------------------- --------- ----------
+DEPARTMENT_NAME
+------------------------------
+Curtis/ Davies                                  29-JAN-97       3100
+Shipping
+
+Randall/ Matos                                  15-MAR-98       2600
+Shipping
+
+Kevin/ Mourgos                                  16-NOV-99       5800
+Shipping
+
+
+Full Name                                       HIRE_DATE     SALARY
+----------------------------------------------- --------- ----------
+DEPARTMENT_NAME
+------------------------------
+Trenna/ Rajs                                    17-OCT-95       3500
+Shipping
+
+Peter/ Vargas                                   09-JUL-98       2500
+Shipping
+
+
+11 rows selected.
+
+Question 3:
+SQL> select CONCAT(m.FIRST_NAME||',',m.LAST_NAME||'.') as "Full Name", d.DEPARTMENT_NAME, l.STATE_PROVINCE, l.CITY, l.POSTAL_CODE
+  2  from employees m join employees w
+  3  on m.employee_id = w.employee_id
+  4  join departments d
+  5  on m.DEPARTMENT_ID = d.DEPARTMENT_ID
+  6  join locations l
+  7  on d.LOCATION_ID =l.LOCATION_ID
+  8  where STATE_PROVINCE in ('Ontario','California','Washington')
+  9  order by l.CITY, d.DEPARTMENT_NAME
+ 10  /
+
+Full Name                                       DEPARTMENT_NAME
+----------------------------------------------- ------------------------------
+STATE_PROVINCE            CITY                           POSTAL_CODE
+------------------------- ------------------------------ ------------
+William,Gietz.                                  Accounting
+Washington                Seattle                        98199
+
+Shelley,Higgins.                                Accounting
+Washington                Seattle                        98199
+
+Jennifer,Whalen.                                Administration
+Washington                Seattle                        98199
+
+
+Full Name                                       DEPARTMENT_NAME
+----------------------------------------------- ------------------------------
+STATE_PROVINCE            CITY                           POSTAL_CODE
+------------------------- ------------------------------ ------------
+Neena,Kochhar.                                  Executive
+Washington                Seattle                        98199
+
+Steven,King.                                    Executive
+Washington                Seattle                        98199
+
+Lex,De Haan.                                    Executive
+Washington                Seattle                        98199
+
+
+Full Name                                       DEPARTMENT_NAME
+----------------------------------------------- ------------------------------
+STATE_PROVINCE            CITY                           POSTAL_CODE
+------------------------- ------------------------------ ------------
+Peter,Vargas.                                   Shipping
+California                South San Francisco            99236
+
+Curtis,Davies.                                  Shipping
+California                South San Francisco            99236
+
+Trenna,Rajs.                                    Shipping
+California                South San Francisco            99236
+
+
+Full Name                                       DEPARTMENT_NAME
+----------------------------------------------- ------------------------------
+STATE_PROVINCE            CITY                           POSTAL_CODE
+------------------------- ------------------------------ ------------
+Kevin,Mourgos.                                  Shipping
+California                South San Francisco            99236
+
+Randall,Matos.                                  Shipping
+California                South San Francisco            99236
+
+Michael,Hartstein.                              Marketing
+Ontario                   Toronto                        M5V 2L7
+
+
+Full Name                                       DEPARTMENT_NAME
+----------------------------------------------- ------------------------------
+STATE_PROVINCE            CITY                           POSTAL_CODE
+------------------------- ------------------------------ ------------
+Pat,Fay.                                        Marketing
+Ontario                   Toronto                        M5V 2L7
+
+
+13 rows selected.
+
+
+Question 4:
+SQL> select max(e.SALARY) as "High", min(e.SALARY) as "Low", avg(e.SALARY) as "Avg", d.DEPARTMENT_NAME, NVL(e.DEPARTMENT_ID, 0) as "pay values"
+  2  from employees e left outer join departments d
+  3  on e.DEPARTMENT_ID = d.DEPARTMENT_ID
+  4  group by d.DEPARTMENT_NAME, e.DEPARTMENT_ID
+  5  order by 1
+  6  /
+
+      High        Low        Avg DEPARTMENT_NAME                pay values
+---------- ---------- ---------- ------------------------------ ----------
+      4400       4400       4400 Administration                         10
+      5800       2500       3500 Shipping                               50
+      7000       7000       7000                                         0
+      9000       4200       6400 IT                                     60
+     11000       8600 10033.3333 Sales                                  80
+     12000       8300      10150 Accounting                            110
+     13000       6000       9500 Marketing                              20
+     24000      17000 19333.3333 Executive                              90
+
+8 rows selected.
+
+Question 5:
+SQL> select e.LAST_NAME as Employee, e.EMPLOYEE_ID as Emp#,m.LAST_NAME as Manager, m.MANAGER_ID as Mgr#
+  2  from employees e full outer join employees m
+  3  on m.employee_id = e.MANAGER_ID
+  4   /
+
+EMPLOYEE                        EMP# MANAGER                         MGR#
+------------------------- ---------- ------------------------- ----------
+Hartstein                        201 King
+Zlotkey                          149 King
+Mourgos                          124 King
+De Haan                          102 King
+Kochhar                          101 King
+Higgins                          205 Kochhar                          100
+Whalen                           200 Kochhar                          100
+Hunold                           103 De Haan                          100
+Lorentz                          107 Hunold                           102
+Ernst                            104 Hunold                           102
+                                     Ernst                            103
+                                     Lorentz                          103
+Vargas                           144 Mourgos                          100
+Matos                            143 Mourgos                          100
+Davies                           142 Mourgos                          100
+Rajs                             141 Mourgos                          100
+                                     Rajs                             124
+                                     Davies                           124
+                                     Matos                            124
+                                     Vargas                           124
+Grant                            178 Zlotkey                          100
+Taylor                           176 Zlotkey                          100
+Abel                             174 Zlotkey                          100
+                                     Abel                             149
+                                     Taylor                           149
+                                     Grant                            149
+                                     Whalen                           101
+Fay                              202 Hartstein                        100
+                                     Fay                              201
+Gietz                            206 Higgins                          101
+                                     Gietz                            205
+King                             100
+
+32 rows selected.

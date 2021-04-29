@@ -1,0 +1,85 @@
+TABLE 1:
+
+SQL> create table CLIENT(
+  2  CLIENT_id  Number(5)      CONSTRAINT CLIENT_CLIENT_ID_PK PRIMARY KEY,
+  3  CLIENT_NAME Varchar2(20)  CONSTRAINT CLIENT_CLIENT_NAME_NN NOT NULL   CONSTRAINT CLIENT_CLIENT_NAME_UK UNIQUE,
+  4  CLIENT_ADDRESS Varchar2(30),
+  5  CLIENT_CITY Varchar2(10)  CONSTRAINT CLIENT_CLIENT_CITY_NN NOT NULL,
+  6  CLIENT_PROV Char(2)       CONSTRAINT CLIENT_CLIENT_PROV_NN NOT NULL,
+  7  CLIENT_POSTAL Char(6)     CONSTRAINT CLIENT_CLIENT_POSTAL_NN NOT NULL
+  8  );
+
+Table created.
+
+SQL> DESCRIBE CLIENT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CLIENT_ID                                 NOT NULL NUMBER(5)
+ CLIENT_NAME                               NOT NULL VARCHAR2(20)
+ CLIENT_ADDRESS                                     VARCHAR2(30)
+ CLIENT_CITY                               NOT NULL VARCHAR2(10)
+ CLIENT_PROV                               NOT NULL CHAR(2)
+ CLIENT_POSTAL                             NOT NULL CHAR(6)
+
+TABLE 2:
+SQL> create table PROG(
+  2  Prog_id  Number(5)      CONSTRAINT PROG_Prog_id_PK PRIMARY KEY,
+  3  Prog_name Varchar2(30)  CONSTRAINT PROG_Prog_name_NN NOT NULL,
+  4  Prog_office Char(4)     CONSTRAINT PROG_Prog_office_NN NOT NULL,
+  5  Prog_phone Char(10)
+  6  );
+
+Table created.
+
+SQL> DESCRIBE PROG
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PROG_ID                                   NOT NULL NUMBER(5)
+ PROG_NAME                                 NOT NULL VARCHAR2(30)
+ PROG_OFFICE                               NOT NULL CHAR(4)
+ PROG_PHONE                                         CHAR(10)
+
+
+TABLE 3:
+SQL> create table PROJECT(
+  2  Project_id   Number(6)      CONSTRAINT PROJECT_Project_id_PK PRIMARY KEY,
+  3  Proj_name    Varchar2(40)   CONSTRAINT PROJECT_Proj_name_NN NOT NULL  CONSTRAINT PROJECT_Proj_name_UK UNIQUE,
+  4  Complet_date Date,
+  5  Total_cost Number(8,2)      CONSTRAINT PROJECT_Total_cost_CK CHECK (Total_cost >0),
+  6  CLIENT_id  Number(5)        CONSTRAINT PROJECT_CLIENT_id_NN NOT NULL CONSTRAINT PROJECT_CLIENT_id_FK REFERENCES CLIENT (CLIENT_id)
+  7  );
+
+Table created.
+
+SQL> DESCRIBE PROJECT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PROJECT_ID                                NOT NULL NUMBER(6)
+ PROJ_NAME                                 NOT NULL VARCHAR2(40)
+ COMPLET_DATE                                       DATE
+ TOTAL_COST                                         NUMBER(8,2)
+ CLIENT_ID                                 NOT NULL NUMBER(5)
+
+TABLE 4:
+  1  create table project_staff
+  2  (prog_id number(5)
+  3  ,project_id number(6)
+  4  ,week_year char(5)
+  5  ,hours_worked number(4,1) not null
+  6  ,constraint hours_worked_min check (hours_worked>0)
+  7  ,constraint prog_id_fk foreign key(prog_id) references prog(prog_id)
+  8  ,constraint project_id_fk foreign key(project_id) references project(project_id)
+  9  ,constraint project_staff_id_pk primary key (prog_id, project_id, week_year)
+ 10  );
+SQL> /
+
+Table created.
+
+SQL> describe project_staff
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PROG_ID                                   NOT NULL NUMBER(5)
+ PROJECT_ID                                NOT NULL NUMBER(6)
+ WEEK_YEAR                                 NOT NULL CHAR(5)
+ HOURS_WORKED
+

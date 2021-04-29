@@ -1,0 +1,139 @@
+Question 1:
+
+SQL> select LAST_NAME, JOB_ID
+  2  from employees
+  3  where JOB_ID =
+  4                  (select JOB_ID
+  5                   from employees
+  6                   where LAST_NAME = 'Davies') and LAST_NAME<> 'Davies'
+  7  /
+
+LAST_NAME                 JOB_ID
+------------------------- ----------
+Rajs                      ST_CLERK
+Matos                     ST_CLERK
+Vargas                    ST_CLERK
+
+3 rows selected.
+
+Question 2:
+
+SQL> select LAST_NAME, JOB_ID, HIRE_DATE
+  2  from employees
+  3  where HIRE_DATE >
+  4                    (select HIRE_DATE
+  5                     from employees
+  6                     where LAST_NAME = 'Grant')
+  7  order by HIRE_DATE DESC
+  8  /
+
+LAST_NAME                 JOB_ID     HIRE_DATE
+------------------------- ---------- ---------
+Zlotkey                   SA_MAN     29-JAN-00
+Mourgos                   ST_MAN     16-NOV-99
+
+2 rows selected.
+
+
+Question 3:
+SQL> select CITY "City", NVL(STATE_PROVINCE,'Unknown') "Province", POSTAL_CODE "PCode", COUNTRY_ID "CC"
+  2  from locations
+  3  where COUNTRY_ID IN
+  4                       (select COUNTRY_ID
+  5                        from countries
+  6                        where COUNTRY_NAME  like'I%')
+  7  order by CITY
+  8   /
+
+City                           Province                  PCode        CC
+------------------------------ ------------------------- ------------ --
+Bombay                         Maharashtra               490231       IN
+Roma                           Unknown                   00989        IT
+Venice                         Unknown                   10934        IT
+
+3 rows selected.
+
+
+Question 4:
+
+SQL> select LAST_NAME, JOB_ID, SALARY
+  2  from employees
+  3  where SALARY <
+  4                 (select avg(SALARY)
+  5                  from employees
+  6                  where JOB_ID like'SA%')
+  7  order by SALARY desc, JOB_ID
+  8  /
+
+LAST_NAME                 JOB_ID         SALARY
+------------------------- ---------- ----------
+Hunold                    IT_PROG          9000
+Taylor                    SA_REP           8600
+Gietz                     AC_ACCOUNT       8300
+Grant                     SA_REP           7000
+Ernst                     IT_PROG          6000
+Fay                       MK_REP           6000
+Mourgos                   ST_MAN           5800
+Whalen                    AD_ASST          4400
+Lorentz                   IT_PROG          4200
+Rajs                      ST_CLERK         3500
+Davies                    ST_CLERK         3100
+Matos                     ST_CLERK         2600
+Vargas                    ST_CLERK         2500
+
+13 rows selected.
+
+
+
+Question 5:
+
+SQL> select last_name, job_id, salary
+  2  from employees
+  3  where salary in (select salary
+  4                   from employees
+  5                   where department_id = (select department_id
+  6                                          from departments
+  7                                          where department_name = 'IT'))
+  8  order by salary, last_name
+  9  /
+
+LAST_NAME                 JOB_ID         SALARY
+------------------------- ---------- ----------
+Lorentz                   IT_PROG          4200
+Ernst                     IT_PROG          6000
+Fay                       MK_REP           6000
+Hunold                    IT_PROG          9000
+
+4 rows selected.
+
+Question 6:
+SQL> select LAST_NAME, SALARY
+  2  from employees
+  3  where SALARY < any
+  4                     (select min(SALARY)
+  5                      from employees
+  6                      group by DEPARTMENT_ID)
+  7  order by SALARY  desc, LAST_NAME
+  8  /
+
+LAST_NAME                     SALARY
+------------------------- ----------
+Hartstein                      13000
+Higgins                        12000
+Abel                           11000
+Zlotkey                        10500
+Hunold                          9000
+Taylor                          8600
+Gietz                           8300
+Grant                           7000
+Ernst                           6000
+Fay                             6000
+Mourgos                         5800
+Whalen                          4400
+Lorentz                         4200
+Rajs                            3500
+Davies                          3100
+Matos                           2600
+Vargas                          2500
+
+17 rows selected.

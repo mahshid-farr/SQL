@@ -1,0 +1,407 @@
+ 
+QUESTION 1:
+ 1  CREATE TABLE SALESREP
+  2  AS (SELECT EMPLOYEE_ID AS REPID, FIRST_NAME AS FNAME, LAST_NAME AS LNAME, PHONE_NUMBER AS PHONE#, SALARY, COMMISSION_PCT AS COMISSION
+  3     FROM EMPLOYEES
+  4*   WHERE DEPARTMENT_ID=80)
+SQL> /
+
+Table created.
+
+SQL> DESCRIBE SALESREP
+ Name                                                                                                      Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ REPID                                                                                                              NUMBER(6)
+ FNAME                                                                                                              VARCHAR2(20)
+ LNAME                                                                                                     NOT NULL VARCHAR2(25)
+ PHONE#                                                                                                             VARCHAR2(20)
+ SALARY                                                                                                             NUMBER(8,2)
+ COMISSION                                                                                                          NUMBER(2,2)
+
+========================================================================================================================================================================================================
+QUESTION 2:
+
+SQL> INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#) 
+     VALUES (201, 'ABCLTD.', 'MONTREAL', 'C', 201)
+  2  /
+
+1 row created.
+
+SQL> INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#)
+  2  VALUES (502, 'BLCK GIANT', 'OTTAWA', 'B', 202)
+  3  /
+
+SQL> INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#)
+  2  VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+  3  /
+Enter value for cust: 503
+Enter value for custname: 'MOTHER GOOSE'
+Enter value for city: 'LONDON'
+Enter value for rating: 'B'
+Enter value for salesrep: 202
+old   2: VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+new   2: VALUES (503, 'MOTHER GOOSE', 'LONDON', 'B', 202)
+
+1 row created.
+
+SQL> INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#)
+  2  VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+  3  /
+Enter value for cust: 701
+Enter value for custname: 'BLUE SKY LTD'
+Enter value for city: 'VANCOUVER'
+Enter value for rating: 'B'
+Enter value for salesrep: 102
+old   2: VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+new   2: VALUES (701, 'BLUE SKY LTD', 'VANCOUVER', 'B', 102)
+
+1 row created.
+
+  1  INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#)
+  2* VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+SQL> /
+Enter value for cust: 702
+Enter value for custname: 'MIKE AND SAM INC.'
+Enter value for city: 'KINGSTONE'
+Enter value for rating: 'A'
+Enter value for salesrep: 107
+old   2: VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+new   2: VALUES (702, 'MIKE AND SAM INC.', 'KINGSTONE', 'A', 107)
+
+1 row created.
+
+SQL> INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#)
+  2  VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+  3  /
+Enter value for cust: 703
+Enter value for custname: 'RED PLANET'
+Enter value for city: 'MISSISSAUGA'
+Enter value for rating: 'C'
+Enter value for salesrep: 107
+old   2: VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+new   2: VALUES (703, 'RED PLANET', 'MISSISSAUGA', 'C', 107)
+
+1 row created.
+
+SQL> INSERT INTO CUST (CUST#,CUSTNAME, CITY,RATING, SALESREP#)
+  2  VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+  3  /
+Enter value for cust: 717
+Enter value for custname: 'BLUE SKY LTD'
+Enter value for city: 'REGINA'
+Enter value for rating: 'D'
+Enter value for salesrep: 102
+old   2: VALUES (&CUST, &CUSTNAME, &CITY, &RATING, &SALESREP)
+new   2: VALUES (717, 'BLUE SKY LTD', 'REGINA', 'D', 102)
+
+1 row created.
+
+
+  1  CREATE TABLE GOODCUST
+  2  AS (SELECT CUST# AS CUSTID, CUSTNAME AS NAME, CITY AS LOCATION, SALESREP# AS REPID
+  3      FROM CUST
+  4*     WHERE RATING = 'A' AND RATING = 'B')
+SQL> /
+
+Table created.
+
+SQL> DESCRIBE GOODCUST
+ Name                                                                                                      Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ CUSTID                                                                                                             NUMBER(6)
+ NAME                                                                                                      NOT NULL VARCHAR2(30)
+ LOCATION                                                                                                  NOT NULL VARCHAR2(20)
+ REPID                                                                                                               NUMBER(7)
+
+
+SQL> SELECT *
+  2  FROM GOODCUST
+  3  /
+
+     CUSTID  NAME                         LOCATION                  REPID 
+---------- ------------------------------ --------------------  ----------
+       201 ABCLTD.                        MONTREAL                     201
+       502 BLCK GIANT                     OTTAWA                       202
+       503 MOTHER GOOSE                   LONDON                       202
+       701 BLUE SKY LTD                   VANCOUVER                    102
+       702 MIKE AND SAM INC.              KINGSTONE                    107
+       703 RED PLANET                     MISSISSAUGA                  107
+       717 BLUE SKY LTD                   REGINA                       102
+
+7 rows selected.
+=========================================================================================================================================================================================================
+QUESTION 3:
+SQL> ALTER TABLE SALESREP
+  2  ADD (JOBCODE VARCHAR2(12))
+  3  /
+
+Table altered.
+
+SQL> DESCRIBE SALESREP
+ Name                                                                                                      Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ REPID                                                                                                              NUMBER(6)
+ FNAME                                                                                                              VARCHAR2(20)
+ LNAME                                                                                                     NOT NULL VARCHAR2(25)
+ PHONE#                                                                                                             VARCHAR2(20)
+ SALARY                                                                                                             NUMBER(8,2)
+ COMISSION                                                                                                          NUMBER(2,2)
+ JOBCODE                                                                                                            VARCHAR2(12)
+========================================================================================================================================================================================================
+QUESTION 4:
+  1  ALTER TABLE SALESREP
+  2* MODIFY SALARY  NOT NULL
+SQL> /
+
+Table altered.
+
+SQL> DESCRIBE SALESREP
+ Name                                                                                                      Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ REPID                                                                                                              NUMBER(6)
+ FNAME                                                                                                              VARCHAR2(20)
+ LNAME                                                                                                     NOT NULL VARCHAR2(25)
+ PHONE#                                                                                                             VARCHAR2(20)
+ SALARY                                                                                                    NOT NULL NUMBER(8,2)
+ COMISSION                                                                                                          NUMBER(2,2)
+ JOBCODE                                                                                                            VARCHAR2(12)
+
+
+SQL> ALTER TABLE GOODCUST  MODIFY (LOCATION NULL)
+  2  /
+
+Table altered.
+
+SQL> DESCRIBE GOODCUST
+ Name                                                                                                      Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ CUSTID                                                                                                             NUMBER(6)
+ NAME                                                                                                      NOT NULL VARCHAR2(30)
+ LOCATION                                                                                                           VARCHAR2(20)
+ REPID                                                                                                              NUMBER(7)
+==========================================================================================================================================================================================================
+QUESTION 5:
+SQL> SELECT LENGTH(CUSTNAME) FROM GOODCUST;
+
+LENGTH(CUSTNAME)
+----------------
+               7
+              10
+              12
+              12
+              17
+              12
+              10
+
+7 rows selected.
+
+SQL> ALTER TABLE CUST
+  2  MODIFY        (CUSTNAME VARCHAR2 (7));
+
+
+
+
+
+===========================================================================================================================================================================================================
+QUESTION 6:
+SQL> ALTER TABLE SALESREP
+  2  SET UNUSED COLUMN JOBCODE
+  3  /
+
+Table altered.
+
+SQL> DESCRIBE SALESREP
+ Name                                                                                                      Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ REPID                                                                                                              NUMBER(6)
+ FNAME                                                                                                              VARCHAR2(20)
+ LNAME                                                                                                     NOT NULL VARCHAR2(25)
+ PHONE#                                                                                                             VARCHAR2(20)
+ SALARY                                                                                                    NOT NULL NUMBER(8,2)
+ COMISSION                                                                                                          NUMBER(2,2)
+============================================================================================================================================================================================================
+QUESTION 7:
+SQL> ALTER TABLE SALESREP
+  2  MODIFY REPID PRIMARY KEY
+  3  /
+
+Table altered.
+
+
+  1  ALTER TABLE GOODCUST
+  2* MODIFY CUSTID PRIMARY KEY
+SQL> /
+
+Table altered.
+=============================================================================================================================================================================================================
+QUESTION 8:
+SQL> ALTER TABLE SALESREP
+  2  ADD CONSTRAINT SALES_PHONE_UK UNIQUE(Phone#)
+  3  /
+
+Table altered.
+
+SQL> ALTER TABLE GOODCUST
+  2  ADD CONSTRAINT GOOD_NAME_UK UNIQUE(NAME)
+  3  /
+
+Table altered.
+=============================================================================================================================================================================================================
+QUESTION 9:
+  1  ALTER TABLE SALESREP
+  2* ADD CONSTRAINT SALES_SALARY_CK CHECK (SALARY BETWEEN 6000 AND 12000)
+SQL> /
+
+Table altered.
+
+
+  1  ALTER TABLE SALESREP
+  2* ADD CONSTRAINT SALES_COMMISIION_CK CHECK (COMISSION  <=0.5)
+SQL> /
+
+Table altered.
+
+=============================================================================================================================================================================================================
+QUESTION 10:
+SQL> ALTER TABLE GOODCUST
+  2  ADD CONSTRAINT GOODCUST_REPID_FK FOREIGN KEY (REPID) REFERENCES SALESREP (REPID)
+  3  /
+
+Table altered.
+
+
+ERROR at line 2:
+ORA-02298: cannot validate (DES720_201A11.GOODCUST_VALIDATE_FK) - parent keys not found
+
+
+because the existing values in both tables are different 
+=============================================================================================================================================================================================================
+QUESTION 11:
+SQL> select * from goodcust
+  2  /
+
+
+    CUSTID NAME              LOCATION                  REPID
+---------- ----------------- -------------------- ----------
+       502 Black Giant       Ottawa                      202
+       503 Mother Goose      London                      202
+       701 BLUE SKY LTD      Vancouver                   102
+       702 MIKE and SAM inc. Kingston                    107
+
+
+
+
+UPDATE goodcust
+SET RepId = NULL;
+
+
+ALTER TABLE goodcust 
+ADD CONSTRAINT goodcust_validate_fk FOREIGN KEY (RepId) REFERENCES salesrep(RepId);
+
+
+Table altered.
+
+
+ Yes, now it works
+================================================================================================================================================================================================================
+QUESTION 12:
+ALTER TABLE goodcust
+Disable CONSTRAINT goodcust_validate_fk;
+
+
+UPDATE goodcust 
+SET RepId = 202 
+WHERE CUSTID = 502;
+
+
+UPDATE goodcust 
+SET RepId = 202 
+WHERE CUSTID = 503;
+
+
+UPDATE goodcust 
+SET RepId = 102 
+WHERE CUSTID = 701;
+
+
+UPDATE goodcust 
+SET RepId = 107 
+WHERE CUSTID = 702;
+
+
+
+
+
+
+ALTER TABLE goodcust
+ADD CONSTRAINT goodcust_validate_fk FOREIGN KEY (RepId) REFERENCES salesrep(RepId);
+               *
+ERROR at line 2:
+ORA-02298: cannot validate (DES720_201A11.GOODCUST_VALIDATE_FK) - parent keys not found
+
+
+Because table values from both do not match
+=================================================================================================================================================================================================================
+QUESTION 13:
+ALTER TABLE salesrep
+    DROP CONSTRAINT SALES_SALARY_CK CHECK;
+
+
+ALTER TABLE salesrep
+    ADD CONSTRAINT SALES_SALARY_CK CHECK(Salary BETWEEN 5000 AND 15000);
+=================================================================================================================================================================================================================
+
+SQL> SELECT  constraint_name, constraint_type, search_condition, table_name
+  2  FROM user_constraints
+  3  WHERE UPPER(table_name) IN ('SALESREP', 'GOODCUST')
+  4  ORDER BY 4,2;
+
+CONSTRAINT_NAME                                                                                                          C
+-------------------------------------------------------------------------------------------------------------------------------- -
+SEARCH_CONDITION
+--------------------------------------------------------------------------------
+TABLE_NAME
+--------------------------------------------------------------------------------------------------------------------------------
+SYS_C00918491                                                                                                            C
+"NAME" IS NOT NULL
+GOODCUST
+
+SYS_C00918665                                                                                                            P
+
+GOODCUST
+
+GOODCUST_REPID_FK                                                                                                        R
+
+GOODCUST
+
+GOOD_NAME_UK                                                                                                             U
+
+GOODCUST
+
+SALES_SALARY_CK                                                                                                          C
+SALARY BETWEEN 6000 AND 12000
+SALESREP
+
+SALES_COMMISIION_CK                                                                                                      C
+COMISSION  <=0.5
+SALESREP
+
+SYS_C00918607                                                                                                            C
+"SALARY" IS NOT NULL
+SALESREP
+
+SYS_C00912776                                                                                                            C
+"LNAME" IS NOT NULL
+SALESREP
+
+SYS_C00918664                                                                                                            P
+
+SALESREP
+
+SALES_PHONE_UK                                                                                                           U
+
+SALESREP
+
+
+10 rows selected.
+
