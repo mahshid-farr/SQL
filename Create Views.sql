@@ -1,0 +1,114 @@
+CREATE TABLE CITIES
+    AS (SELECT LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY_ID
+       FROM LOCATIONS
+      WHERE (LOCATION_ID < 2000))
+                                                                                                      
+
+SELECT *
+   FROM CITIES
+
+CREATE TABLE TOWNS
+    AS (SELECT LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, STATE_PROVINCE,COUNTRY_ID
+       FROM LOCATIONS
+       WHERE LOCATION_ID < 1500)
+                                                                                                        
+SELECT *
+    FROM TOWNS
+
+PURGE RECYCLEBIN;
+
+DROP TABLE TOWNS
+
+SELECT *
+    FROM recyclebin
+
+FLASHBACK TABLE TOWNS TO BEFORE DROP;
+
+SELECT *
+    FROM RECYCLEBIN
+
+DROP TABLE TOWNS PURGE
+
+
+SELECT *
+    FROM RECYCLEBIN
+
+
+FLASHBACK TABLE TOWNS TO BEFORE DROP
+
+CREATE VIEW CAN_CITY_VU
+    AS (SELECT STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE
+        FROM CITIES
+       WHERE COUNTRY_ID = 'CA')
+
+ SELECT *
+    FROM CAN_CITY_VU
+
+CREATE OR REPLACE VIEW CAN_CITY_VU (Str_Adr, P_Code, City, Prov)
+    AS (SELECT STREET_ADDRESS, POSTAL_CODE,CITY, STATE_PROVINCE
+        FROM CITIES
+       WHERE COUNTRY_ID IN ('CA','IT'))
+
+SELECT *
+    FROM CAN_CITY_VU
+
+CREATE VIEW CITY_DNAME_VU
+    AS (SELECT D.DEPARTMENT_NAME, L.CITY, L.STATE_PROVINCE
+       FROM DEPARTMENTS D RIGHT OUTER JOIN LOCATIONS L
+       ON D.LOCATION_ID = L.LOCATION_ID
+      WHERE COUNTRY_ID IN ('CA', 'IT'))
+
+SELECT *
+    FROM CITY_DNAME_VU
+
+CREATE OR REPLACE VIEW CITY_DNAME_VU (DName, City, Prov)
+    AS (SELECT D.DEPARTMENT_NAME, L.CITY, L.STATE_PROVINCE
+       FROM DEPARTMENTS D RIGHT OUTER JOIN LOCATIONS L
+       ON D.LOCATION_ID = L.LOCATION_ID
+       WHERE (COUNTRY_ID IN ('CA', 'IT') OR COUNTRY_ID != 'US'))
+
+SELECT *
+    FROM CITY_DNAME_VU
+                
+SELECT *
+    FROM USER_VIEWS;
+
+
+                                                                                                                  
+(SELECT D.DEPARTMENT_NAME, L.CITY, L.STATE_PROVINCE
+    FROM DEPARTMENTS D RIGHT
+(SELECT D.DEPARTMENT_NAME, L.CITY, L.STATE_PROVINCE
+    FROM DEPARTMENTS D RIGHT OUTER JOIN LOCATIONS L
+    ON D.LOCATION_ID = L.LOCATION_ID
+    WHERE (COUNTRY_ID IN ('CA', 'IT') OR COUNTRY_ID != 'US'))
+
+                                                                                                                    
+(SELECT STREET_ADDRESS, POSTAL_CODE,CITY, STATE_PROVINCE
+    FROM CITIES
+    WHE
+(SELECT STREET_ADDRESS, POSTAL_CODE,CITY, STATE_PROVINCE
+    FROM CITIES
+    WHERE COUNTRY_ID IN ('CA','IT'))
+
+
+DROP VIEW CITY_DNAME_VU
+
+SELECT *
+  FROM USER_VIEWS
+                                                                                                                     
+(SELECT STREET_ADDRESS, POSTAL_CODE,CITY, STATE_PROVINCE
+    FROM CITIES
+    WHE
+(SELECT STREET_ADDRESS, POSTAL_CODE,CITY, STATE_PROVINCE
+    FROM CITIES
+    WHERE COUNTRY_ID IN ('CA','IT'))
+
+
+
+
+
+
+                                                                                                                       
+
+
+
